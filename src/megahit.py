@@ -3,10 +3,11 @@ A class that wraps around megahit to perform de novo genome assemblies
 '''
 
 import os
+import subprocess
 
 class Megahit:
 
-    def __init__(self, cmd_path = None):
+    def __init__(self, cmd_path = "megahit"):
         '''
         Create an instance of Megahit
         '''
@@ -51,16 +52,28 @@ class Megahit:
         '''
         return
 
-    def run(self, seq1 = None, seq2 = None, seq12 = None, seq = None, outdir = None):
+    def run(self, seq1 = None, seq2 = None, seq12 = None, seq = None, outdir = "./megahit_out"):
         '''
         Run megahit
         '''
-        if (seq1 != None & seq2 != None):
+        #check if there is an executable for megahit
+        if self.cmd_path == "megahit" and not self.exists_in_path:
+            self.in_path()
+        #different flavours of commands depending on type of inputted sequences
+        if (seq1 is not None and seq2 is not None):
             '''Sequences are paired-end reads'''
+            for f in [seq1,seq2]:
+                if not os.path.isfile(f):
+                    raise RuntimeError('''
+                    Cannot find one or more of the read files!
+                    ''')
+            cmd = [self.cmd_path, "-1", seq1, "-2", seq2, "--out-dir", outdir]
+            print(cmd)
+            subprocess.Popen(cmd)
             return
-        elif (seq12 != None):
+        elif (seq12 is not None):
             '''Paired-end interleaved sequences'''
-        elif(seq != None):
+        elif(seq is not None):
             '''Single end sequences'''
         else:
             raise ValueError('''
@@ -72,3 +85,8 @@ class Megahit:
                 - seq for single-end reads
             ''')
         return
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+    

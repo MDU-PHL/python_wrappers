@@ -68,7 +68,6 @@ class Megahit:
                     Cannot find one or more of the read files!
                     ''')
             cmd = [self.cmd_path, "-1", seq1, "-2", seq2, "--out-dir", outdir]
-            print(cmd)
             subprocess.Popen(cmd)
             return
         elif (seq12 is not None):
@@ -77,9 +76,8 @@ class Megahit:
             '''Single end sequences'''
         else:
             raise ValueError('''
-            Could not figure out what type of read data is
-            is supposed to be used by megahit. One of the following must
-            be specified:
+            Could not figure out what type of read data megahit is supposed
+            to use. One of the following must be specified:
                 - seq1 and seq2 for paired-end reads in separate files
                 - seq12 for interleaved paired-end reads
                 - seq for single-end reads
@@ -89,4 +87,3 @@ class Megahit:
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-    

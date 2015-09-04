@@ -2,6 +2,8 @@
 A class that wraps around megahit to perform de novo genome assemblies
 '''
 
+import os
+
 class Megahit:
 
     def __init__(self, cmd_path = None):
@@ -30,7 +32,7 @@ class Megahit:
 
     def in_path(self):
         '''
-        Check if megahit exists in the path, and can be return.
+        Check if megahit exists in the path.
         '''
         for path in os.environ["PATH"].split(os.pathsep):
             path = path.strip('"')
@@ -39,7 +41,7 @@ class Megahit:
                 self.exists_in_path = True
             else:
                 raise RuntimeError('''
-                Could find an executable for megahit. Please
+                Could NOT find an executable for megahit. Please
                 make sure it is in your path.
                 ''')
         return
@@ -50,8 +52,24 @@ class Megahit:
         '''
         return
 
-    def run(self):
+    def run(self, seq1 = None, seq2 = None, seq12 = None, seq = None, outdir = None):
         '''
         Run megahit
         '''
+        if (seq1 != None & seq2 != None):
+            '''Sequences are paired-end reads'''
+            return
+        elif (seq12 != None):
+            '''Paired-end interleaved sequences'''
+        elif(seq != None):
+            '''Single end sequences'''
+        else:
+            raise ValueError('''
+            Could not figure out what type of read data is
+            is supposed to be used by megahit. One of the following must
+            be specified:
+                - seq1 and seq2 for paired-end reads in separate files
+                - seq12 for interleaved paired-end reads
+                - seq for single-end reads
+            ''')
         return

@@ -39,12 +39,11 @@ class Megahit:
             exe_file = os.path.join(path, "megahit")
             if os.path.isfile(exe_file):
                 self.exists_in_path = True
-            else:
-                raise RuntimeError('''
-                Could NOT find an executable for megahit. Please
-                make sure it is in your path.
-                ''')
-        return
+                return
+        raise RuntimeError('''
+        Could NOT find an executable for megahit. Please
+        make sure it is in your path.
+        ''')
 
     def create_cmd(self):
         '''

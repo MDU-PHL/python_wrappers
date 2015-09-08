@@ -106,7 +106,7 @@ class Megahit(AbstractCommandline):
             _Option(["--out-prefix", "out_prefix"],
             "output prefix (the contig file will be OUT_DIR/OUT_PREFIX.contigs.fa)",
             equate = False),
-            _Option(["--min-contig-length", "min_contig_len"],
+            _Option(["--min-contig-len", "min_contig_len"],
             "minimum length of contigs to output, default 200",
             equate = False),
             _Switch(["--keep-tmp-files", "keep_tmp_files"],
@@ -160,6 +160,6 @@ class Megahit(AbstractCommandline):
         out, err = self()
         stats = err.split("\n")
         stats = [rec for rec in stats if rec[0:10] == "--- [STAT]"]
-        stats = stats.split(",")
-        print(stats)
+        #stats = stats.split(",")
+        print(stats[0])
         return

@@ -157,5 +157,9 @@ class Megahit(AbstractCommandline):
             ''')
         self.out_dir = outdir
         print(str(self))
-        out = self()
+        out, err = self()
+        stats = err.split("\n")
+        stats = [rec for rec in stats if rec[0:10] == "--- [STAT]"]
+        stats = stats.split(",")
+        print(stats)
         return
